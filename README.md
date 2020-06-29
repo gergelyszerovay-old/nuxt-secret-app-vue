@@ -1,6 +1,6 @@
 ## Quickstart
 
-You can use npm or docker-compose.
+You can use *npm* or *docker-compose*.
 
 ### Installation
 
@@ -10,7 +10,7 @@ You can use npm or docker-compose.
 
 `docker-compose up install` or `npm install`
 
-If you use npm, set the MONGDB_CONNECTION_STRING environment variable, eg.: 
+If you use npm, set the **MONGDB_CONNECTION_STRING** environment variable, eg.: 
 
 MONGDB_CONNECTION_STRING=mongodb://localhost:27017/secret-store
 
@@ -40,19 +40,19 @@ It's in the [/server](https://github.com/gergelyszerovay/nuxt-secret-app/tree/ma
 
 **API specification**
 
-I use the OpenAPI 3 standard to [specify the API.](https://github.com/gergelyszerovay/nuxt-secret-app/blob/master/server/api.yaml). The app validates the specification and the request/response data with the *express-openapi-validator* package.
+I use the OpenAPI 3 standard to [specify the API](https://github.com/gergelyszerovay/nuxt-secret-app/blob/master/server/api.yaml). The app validates the specification and the request/response data with the *express-openapi-validator* package.
 
 **Cryptography**
 
 The app stores the secret texts encrypted in its database. 
 
-When the app stores a new secret, it calculates the SHA256 hash of it. It uses this hash, and an initialization vector (IV) to encrypt the secret text with the AES256 CBC algorithm. 
+When the app stores a new secret, it calculates the SHA256 hash of it. It uses this hash (as password), and an initialization vector (IV) to encrypt the secret text with the AES256 CBC algorithm. 
 
-The app doesn't store this hash in the database, instead it calculates a second SHA256 hash from it and stores that second one.
+The app doesn't store this hash in the database, instead it calculates a second SHA256 hash from it, and stores that second one.
 
 So if the database gets compromised, the attacker won’t be able to decode the secret texts.
 
-When the user tries to read a secret, she/he first provides the hash of it, and then the app calculates the second hash from it, then looks up this second hash from the database. 
+When the user tries to read a secret, she/he first provides the hash of it, and then the app calculates the second hash from it, then looks up this second hash in the database. 
 
 **Database**
 
@@ -80,7 +80,7 @@ module.exports = mongoose.model('Secret', {
 })
 ```
 
-##Front-end
+## Front-end
 
 The app uses the *Ant Design of Vue* design system. 
 
@@ -110,13 +110,13 @@ I made a few samples for each different test types. In a real life project, I'd 
 
 #### End-to-end test example (Jest + Jest Cucumber + Selenium Grid)
 
-To run on docker:
+To run on Docker:
 
 `docker-compose up test-e2e`
 
 It starts a simple Selenium Grid with a single Chrome node and runs the tests. You can connect to the Chrome node's VNC server on the port 5900.
 
-To run it in your local IDE, install Firefox, then:
+To run it with npm, install Firefox, then:
 
 `npm install geckodriver -g`
 
