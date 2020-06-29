@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  description: ""
+  version: 1.0.0
+  title: "Secret server API"
+  termsOfService: ""
+  contact:
+    email: email@example.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: /api
+paths:
+  /secret/{hash}:
+    get:
+      description: Returns a stored secret
+      operationId: getSecret
+      x-eov-operation-handler: routes/secret
+      parameters:
+        - name: hash
+          in: path
+          description: The hash of the string (64 character, hex string)
+          required: true
+          schema:
+            type: string
+            minLength: 64
+            maxLength: 64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Secret'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /secret/:
+    post:
+      description: Stores a new secret
+      operationId: postSecret
+      x-eov-operation-handler: routes/secret
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              additionalProperties: false
+              type: object
+              properties:
+                secret:
+                  type: string
+                  description: This text that will be saved as a secret
+                expireAfterViews:
+                  type: integer
+                  minimum: 1
+                  description: The secret won't be available after the given number of views
+                expireAfter:
+                  type: number
+                  minimum: 0
+                  description: The secret won't be available after the given time. The value is provided in minutes, 0 means never expires
+              required:
+                - secret
+                - expireAfterViews
+                - expireAfter
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Secret'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      additionalProperties: false
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: The error message
+        errors:
+          type: array
+          items:
+            type: object
+            required:
+              - path
+              - message
+              - errorCode
+            properties:
+              path:
+                type: string
+              message:
+                type: string
+              errorCode:
+                type: string
+    Secret:
+      additionalProperties: false
+      required:
+        - hash
+        - secretText
+        - createdAt
+        - expiresAt
+        - remainingViews
+      properties:
+        hash:
+          type: string
+          description: The hash of the string (64 character, hex string)
+        secretText:
+          type: string
+          description: The original text
+        createdAt:
+          type: integer
+          description: The Timestamp the secret was created (Unix timestamp)
+        expiresAt:
+          type: integer
+          description: The Timestamp the secret if TTL is given (Unix timestamp or zero, when no TTL given)
+        remainingViews:
+          type: integer

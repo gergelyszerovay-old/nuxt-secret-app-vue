@@ -1,0 +1,64 @@
+version: '3.1'
+services:
+  install:
+    image: node:12
+    volumes:
+      - .:/opt/app
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+    command: npm install
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+  app:
+    image: node:12
+    command: npm run docker-dev
+    volumes:
+      - .:/opt/app:delegated
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongodb
+    environment:
+      MONGDB_CONNECTION_STRING: mongodb://mongodb:27017/admin
+  storybook:
+    image: node:12
+    command: npm run docker-storybook
+    volumes:
+      - .:/opt/app:delegated
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+    ports:
+      - 61754:61754
+  test-server-unit:
+    image: node:12
+    command: npm run test-server-unit
+    volumes:
+      - .:/opt/app:delegated
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+  test-server-api:
+    image: node:12
+    command: npm run test-server-api
+    volumes:
+      - .:/opt/app:delegated
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongodb
+    environment:
+      MONGDB_CONNECTION_STRING: mongodb://mongodb:27017/admin
+  test-client-unit:
+    image: node:12
+    command: npm run test-client-unit
+    volumes:
+      - .:/opt/app:delegated
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+volumes:
+  node_modules:
