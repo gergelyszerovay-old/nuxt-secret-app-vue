@@ -23,7 +23,7 @@ services:
     depends_on:
       - mongodb
     environment:
-      MONGDB_CONNECTION_STRING: mongodb://mongodb:27017/admin
+      MONGODB_CONNECTION_STRING: mongodb://mongodb:27017/admin
   storybook:
     image: node:12
     command: npm run docker-storybook
@@ -50,7 +50,7 @@ services:
     depends_on:
       - mongodb
     environment:
-      MONGDB_CONNECTION_STRING: mongodb://mongodb:27017/admin
+      MONGODB_CONNECTION_STRING: mongodb://mongodb:27017/admin
   test-client-unit:
     image: node:12
     command: npm run test-client-unit

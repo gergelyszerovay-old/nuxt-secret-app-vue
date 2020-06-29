@@ -10,9 +10,9 @@ You can use *npm* or *docker-compose*.
 
 `docker-compose up install` or `npm install`
 
-If you use npm, set the **MONGDB_CONNECTION_STRING** environment variable, eg.: 
+If you use npm, set the **MONGODB_CONNECTION_STRING** environment variable, eg.: 
 
-MONGDB_CONNECTION_STRING=mongodb://localhost:27017/secret-store
+MONGODB_CONNECTION_STRING=mongodb://localhost:27017/secret-store
 
 ### Run the app
 
