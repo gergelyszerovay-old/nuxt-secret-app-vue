@@ -47,8 +47,6 @@ services:
       - .:/opt/app:delegated
       - node_modules:/opt/app/node_modules
     working_dir: /opt/app
-    ports:
-      - 3000:3000
     depends_on:
       - mongodb
     environment:
