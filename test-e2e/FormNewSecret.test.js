@@ -1,7 +1,9 @@
 
 const WebDriver = require('selenium-webdriver')
 require('selenium-webdriver/firefox')
-require('geckodriver')
+if (process.env.SELENIUM_HUB_URL === '-') {
+  require('geckodriver')
+}
 const { defineFeature, loadFeature } = require('jest-cucumber')
 const { xClass, getElementCSS, getElementId, getElementXPath } = require('./helpers')
 
