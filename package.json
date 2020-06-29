@@ -16,8 +16,8 @@
     "test-server-unit": "jest --config=test-server-unit/jest.config.js",
     "test-server-api": "jest --config=test-server-api/jest.config.js --verbose test-server-api/api.test.js",
     "test-e2e": "jest --verbose test-e2e/FormNewSecret.test.js ",
-    "storybook": "start-storybook",
-    "docker-storybook": "start-storybook --host app"
+    "storybook": "start-storybook --port 5000",
+    "docker-storybook": "start-storybook --host storybook --port 5000"
   },
   "dependencies": {
     "@nuxt/http": "^0.5.5",
