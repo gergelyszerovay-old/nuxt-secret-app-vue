@@ -39,7 +39,7 @@ defineFeature(feature, (test) => {
     if (process.env.SELENIUM_HUB_URL === 'local') {
       ctx.driver = await new WebDriver.Builder().forBrowser('firefox').build()
     } else {
-      ctx.driver = new WebDriver.Builder()
+      ctx.driver = await new WebDriver.Builder()
         .usingServer(process.env.SELENIUM_HUB_URL)
         .withCapabilities(capabilities)
         .build()
