@@ -46,7 +46,9 @@ defineFeature(feature, (test) => {
     }
   }, 10000)
 
-  // afterAll(async () => driver.quit(), 10000);
+  afterAll(async () => {
+    await ctx.driver.quit()
+  }, 10000)
 
   test('The TTL field accepts only positive integers', ({ given, when, then }) => {
     // console.log(ctx);

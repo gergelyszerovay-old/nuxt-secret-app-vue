@@ -11,7 +11,7 @@ services:
     image: mongo
     ports:
       - 27017:27017
-  app:
+  nuxt:
     image: node:12
     command: npm run docker-dev
     volumes:
@@ -66,7 +66,25 @@ services:
       - node_modules:/opt/app/node_modules
     working_dir: /opt/app
     environment:
-      SELENIUM_HUB_URL: http://192.168.99.111:4444/wd/hub
-      APP_BASE_URL: http://app/
+      SELENIUM_HUB_URL: http://selenium-hub:4444/wd/hub
+      APP_BASE_URL: http://nuxt:3000/
+    depends_on:
+      - chrome
+  selenium-hub:
+    image: selenium/hub:3.141.59-20200525
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+  chrome:
+    image: selenium/node-chrome-debug:3.141.59-20200525
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
+    ports:
+      - 5900:5900
 volumes:
   node_modules:
