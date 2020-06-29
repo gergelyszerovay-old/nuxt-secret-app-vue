@@ -49,6 +49,7 @@
     "eslint": "^7.2.0",
     "eslint-plugin-nuxt": "^1.0.0",
     "jest": "^26.0.1",
+    "jest-cucumber": "^2.0.11",
     "jest-serializer-vue": "^2.0.2",
     "selenium-webdriver": "^4.0.0-alpha.7",
     "supertest": "^4.0.2",

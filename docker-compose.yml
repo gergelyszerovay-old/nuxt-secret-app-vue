@@ -58,5 +58,15 @@ services:
       - .:/opt/app:delegated
       - node_modules:/opt/app/node_modules
     working_dir: /opt/app
+  test-e2e:
+    image: node:12
+    command: npm run test-e2e
+    volumes:
+      - .:/opt/app:delegated
+      - node_modules:/opt/app/node_modules
+    working_dir: /opt/app
+    environment:
+      SELENIUM_HUB_URL: http://192.168.99.111:4444/wd/hub
+      APP_BASE_URL: http://app/
 volumes:
   node_modules:

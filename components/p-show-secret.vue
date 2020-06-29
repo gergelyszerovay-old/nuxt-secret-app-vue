@@ -3,7 +3,7 @@
     <a-col :xs="{span: 22, offset: 1}" :md="{span: 16, offset: 4}">
       <a-descriptions :title="title" bordered :column="1">
         <a-descriptions-item label="Hash">
-          <a :href="'/get-secret/' + hash" target="_blank">{{ hash }}</a>
+          <a :href="'/get-secret/' + hash" target="_blank" data-qa="a-descriptions-item-a.hash">{{ hash }}</a>
         </a-descriptions-item>
         <a-descriptions-item label="Secret text">
           {{ secretText }}

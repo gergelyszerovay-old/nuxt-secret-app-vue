@@ -22,15 +22,10 @@ const getElementId = async (driver, id, timeout = 3000) => {
   return await driver.wait(until.elementIsVisible(el), timeout)
 }
 
-const antGetFormItemExplain = async (driver, id) => {
-  return await getElementXPath(driver, `//*[@id='${id}']/ancestor::div${xClass('ant-form-item')}//div${xClass('ant-form-item-explain')}`)
-}
-
 module.exports = {
   xClass,
   getElementCSS,
   getElementXPath,
   getElementName,
-  getElementId,
-  antGetFormItemExplain
+  getElementId
 }
