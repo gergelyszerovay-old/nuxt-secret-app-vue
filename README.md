@@ -122,6 +122,6 @@ To run it with npm, install Firefox, then:
 
 `npm link geckodriver`
 
-Set the SELENIUM_HUB_URL environment variable to a hyphen (SELENIUM_HUB_URL=-), then:
+Set the SELENIUM_HUB_URL environment variable to 'local' (SELENIUM_HUB_URL=local), then:
 
 `npm run test-e2e`

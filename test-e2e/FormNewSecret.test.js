@@ -1,7 +1,7 @@
 
 const WebDriver = require('selenium-webdriver')
 require('selenium-webdriver/firefox')
-if (process.env.SELENIUM_HUB_URL === '-') {
+if (process.env.SELENIUM_HUB_URL === 'local') {
   require('geckodriver')
 }
 const { defineFeature, loadFeature } = require('jest-cucumber')
@@ -18,7 +18,7 @@ const capabilities = {
 
 let rootURL
 
-if (process.env.SELENIUM_HUB_URL === '-') {
+if (process.env.SELENIUM_HUB_URL === 'local') {
   rootURL = 'http://localhost:3000/'
 } else {
   rootURL = process.env.APP_BASE_URL
@@ -36,7 +36,7 @@ defineFeature(feature, (test) => {
   const ctx = {}
 
   beforeAll(async () => {
-    if (process.env.SELENIUM_HUB_URL === '-') {
+    if (process.env.SELENIUM_HUB_URL === 'local') {
       ctx.driver = await new WebDriver.Builder().forBrowser('firefox').build()
     } else {
       ctx.driver = new WebDriver.Builder()
