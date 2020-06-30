@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nuxt",
     "docker-dev": "nuxt --hostname nuxt",
+    "docker": "nuxt build && nuxt start --hostname nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "export": "nuxt export",

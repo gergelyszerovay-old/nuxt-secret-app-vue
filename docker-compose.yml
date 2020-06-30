@@ -13,7 +13,7 @@ services:
       - 27017:27017
   nuxt:
     image: node:12
-    command: npm run docker-dev
+    command: npm run docker
     volumes:
       - .:/opt/app:delegated
       - node_modules:/opt/app/node_modules
@@ -24,6 +24,7 @@ services:
       - mongodb
     environment:
       MONGODB_CONNECTION_STRING: mongodb://mongodb:27017/admin
+    stdin_open: true
   storybook:
     image: node:12
     command: npm run docker-storybook

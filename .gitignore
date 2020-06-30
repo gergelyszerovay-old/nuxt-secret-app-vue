@@ -94,3 +94,4 @@ sw.*
 .run
 
 /package-lock.json
+/dist
