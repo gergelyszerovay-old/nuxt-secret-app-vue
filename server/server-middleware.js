@@ -7,58 +7,65 @@ const { OpenApiValidator } = require('express-openapi-validator')
 const yaml = require('js-yaml')
 const mongoose = require('mongoose')
 
-const init = new Promise((resolve, reject) => {
-  mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  }).catch((error) => {
-    console.log(error)
-    process.exit()
-    // reject(error)
-  }).then(() => {
-    const app = express()
+let init = false
 
-    console.log('MongoDB connected.')
+const createInitPromise = () => {
+  return new Promise((resolve, reject) => {
+    mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }).catch((error) => {
+      console.log(error)
+      process.exit()
+      // reject(error)
+    }).then(() => {
+      const app = express()
 
-    const swaggerUi = require('swagger-ui-express')
+      console.log('MongoDB connected.')
 
-    const apiSpecFile = path.join(__dirname, 'api.yaml')
+      const swaggerUi = require('swagger-ui-express')
 
-    const apiSpecContents = fs.readFileSync(apiSpecFile, 'utf8')
-    const apiSpec = yaml.safeLoad(apiSpecContents)
+      const apiSpecFile = path.join(__dirname, 'api.yaml')
 
-    app.use(bodyParser.urlencoded({ extended: false }))
-    app.use(bodyParser.text())
-    app.use(bodyParser.json())
+      const apiSpecContents = fs.readFileSync(apiSpecFile, 'utf8')
+      const apiSpec = yaml.safeLoad(apiSpecContents)
 
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiSpec))
+      app.use(bodyParser.urlencoded({ extended: false }))
+      app.use(bodyParser.text())
+      app.use(bodyParser.json())
 
-    app.use(logger('dev'))
+      app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiSpec))
 
-    app.use('/api-spec', express.static(apiSpecFile))
+      app.use(logger('dev'))
 
-    new OpenApiValidator({
-      apiSpec: apiSpecFile,
-      validateRequests: true,
-      // validateResponses: true,
-      operationHandlers: path.join(__dirname)
-    })
-      .install(app)
-      .then(() => {
-        app.use((err, req, res, next) => {
-          // format errors
-          res.status(err.status || 500).json({
-            message: err.message,
-            errors: err.errors
-          })
-        })
-        console.log('API spec loaded.')
-        resolve(app)
+      app.use('/api-spec', express.static(apiSpecFile))
+
+      new OpenApiValidator({
+        apiSpec: apiSpecFile,
+        validateRequests: true,
+        // validateResponses: true,
+        operationHandlers: path.join(__dirname)
       })
+        .install(app)
+        .then(() => {
+          app.use((err, req, res, next) => {
+            // format errors
+            res.status(err.status || 500).json({
+              message: err.message,
+              errors: err.errors
+            })
+          })
+          console.log('API spec loaded.')
+          resolve(app)
+        })
+    })
   })
-})
+}
 
 module.exports = async (req, res, next) => {
+  if (!init) {
+    init = createInitPromise()
+  }
   const app = await init
   app(req, res, next)
 }
