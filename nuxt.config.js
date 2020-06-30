@@ -1,5 +1,6 @@
 
 export default {
+  telemetry: false,
   /*
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode

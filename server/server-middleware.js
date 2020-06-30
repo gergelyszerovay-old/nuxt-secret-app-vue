@@ -19,6 +19,8 @@ const createInitPromise = () => {
       process.exit()
       // reject(error)
     }).then(() => {
+      mongoose.set('useCreateIndex', true)
+
       const app = express()
 
       console.log('MongoDB connected.')
