@@ -1,3 +1,11 @@
+# Simple secret storage app that demonstrates how to integrate Vue & Nuxt, OpenAPI 3 and MongoDB using Javascript
+
+The user can store secret texts in the app, he/she can also specify its expiration (in minutes), and an how many times it can be viewed.
+
+From the secret text, the app generates a hash, and a link containing that hash, so the user can share his or her secret with others.
+
+The app's database stores the secrets encrypted.  
+
 ## Quickstart
 
 You can use *npm* or *docker-compose*.
