@@ -9,10 +9,10 @@ const ExceptionHandler = (res, error) => {
 
 module.exports = {
   getSecret: async (req, res) => {
-    const hashPrivate = req.params.hash
-    const hashDatabase = cryptoUtil.getSHA256(hashPrivate)
-
     try {
+      const hashPrivate = req.params.hash
+      const hashDatabase = cryptoUtil.getSHA256(hashPrivate)
+
       const secretToShow = await SecretModel.findOne({ hash: hashDatabase })
 
       if (!secretToShow) {
@@ -45,14 +45,14 @@ module.exports = {
     }
   },
   postSecret: async (req, res) => {
-    const hashPrivate = cryptoUtil.getSHA256(req.body.secret)
-    const hashDatabase = cryptoUtil.getSHA256(hashPrivate)
-
-    const newIV = cryptoUtil.getIV()
-
-    const encryptedSecret = cryptoUtil.encryptFromUTF8(req.body.secret, hashPrivate, newIV)
-
     try {
+      const hashPrivate = cryptoUtil.getSHA256(req.body.secret)
+      const hashDatabase = cryptoUtil.getSHA256(hashPrivate)
+
+      const newIV = cryptoUtil.getIV()
+
+      const encryptedSecret = cryptoUtil.encryptFromUTF8(req.body.secret, hashPrivate, newIV)
+
       await SecretModel.deleteMany({ hash: hashDatabase })
 
       const newSecret = new SecretModel({
